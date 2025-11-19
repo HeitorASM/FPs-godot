@@ -1,0 +1,80 @@
+[gd_scene load_steps=13 format=3 uid="uid://diaydhxbwghoq"]
+
+[ext_resource type="Script" uid="uid://bvrcnpladfd4d" path="res://player.gd" id="1_a202f"]
+[ext_resource type="Texture2D" uid="uid://dkuc5j4kn0mvb" path="res://photo-1568535904307-f48b760a39f3.jpg" id="1_i5arm"]
+[ext_resource type="Texture2D" uid="uid://codk76d2m5yko" path="res://T_Shotgun_D.png" id="2_r3fl7"]
+[ext_resource type="ArrayMesh" uid="uid://cl4yx3fh7l0om" path="res://S_Shotgun.obj" id="3_jka67"]
+[ext_resource type="Script" uid="uid://qgf3aodkgain" path="res://s_shotgun.gd" id="4_i5arm"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4xowi"]
+size = Vector2(60, 60)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_a202f"]
+data = PackedVector3Array(10, 0, 10, -10, 0, 10, 10, 0, -10, -10, 0, 10, -10, 0, -10, 10, 0, -10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jsk3o"]
+albedo_texture = ExtResource("1_i5arm")
+
+[sub_resource type="BoxMesh" id="BoxMesh_4arys"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_noarx"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a202f"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wc5p8"]
+albedo_texture = ExtResource("2_r3fl7")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Mapa" type="Node3D" parent="."]
+transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, -0.0231018, -0.0218369, 0.0366309)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mapa"]
+transform = Transform3D(0.285714, 0, 0, 0, 0.285714, 0, 0, 0, 0.285714, 0, 3.39933e-08, -6.79865e-08)
+mesh = SubResource("PlaneMesh_4xowi")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Mapa/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mapa/MeshInstance3D/StaticBody3D"]
+transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_a202f")
+
+[node name="OBJ" type="Node3D" parent="Mapa"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Mapa/OBJ"]
+physics_interpolation_mode = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.740744, 1.07516, -5.67362)
+material_override = SubResource("StandardMaterial3D_jsk3o")
+cast_shadow = 2
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("../..")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.995, 0.876485, -2.53669)
+script = ExtResource("1_a202f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.500621, 0.881714, 0.0817626)
+mesh = SubResource("CapsuleMesh_noarx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.532694, 0.83929, 0.0863819)
+shape = SubResource("CapsuleShape3D_a202f")
+
+[node name="neck" type="Node3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0318849, 1.64043, 0.0259447)
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/neck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.557403, 0.0146, 0.0159874)
+
+[node name="SShotgun" type="MeshInstance3D" parent="CharacterBody3D/neck/Camera3D"]
+transform = Transform3D(0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, -0.408222, -0.733578, -1.03444)
+material_override = SubResource("StandardMaterial3D_wc5p8")
+mesh = ExtResource("3_jka67")
+skeleton = NodePath("../../../MeshInstance3D")
+script = ExtResource("4_i5arm")
